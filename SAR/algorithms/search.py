@@ -29,6 +29,38 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     # TODO: Add your code here
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    
+    estado_inicial = problem.getStartState()
+    
+    if problem.isGoalState(estado_inicial):
+        return []
+    
+    pila = utils.Stack()
+    pila.push((problem.getStartState(), []))
+    
+    visitados = set()
+
+    while not pila.isEmpty():
+        estado, camino = pila.pop()
+        
+        if estado in visitados:
+            continue
+        
+        visitados.add(estado)
+        
+        if problem.isGoalState(estado):
+            return camino
+        # DFS no se preocupa por los costos porque siempre va a profundidad
+        for nuevo_estado, accion in problem.getSuccessors(estado):
+            if nuevo_estado not in visitados:
+                nuevo_camino = camino + [accion]
+                pila.push((nuevo_estado, nuevo_camino))
+                
+    return []
+        
     utils.raiseNotDefined()
 
 
