@@ -13,7 +13,6 @@ def tinyHouseSearch(problem: SearchProblem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
-
 def depthFirstSearch(problem: SearchProblem):
     """
     Search the deepest nodes in the search tree first.
@@ -28,7 +27,7 @@ def depthFirstSearch(problem: SearchProblem):
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    # TODO: Add your code here
+    
     print("Start:", problem.getStartState())
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
@@ -61,9 +60,6 @@ def depthFirstSearch(problem: SearchProblem):
                 
     return []
         
-    utils.raiseNotDefined()
-
-
 def breadthFirstSearch(problem: SearchProblem):
     """
     Search the shallowest nodes in the search tree first.
@@ -86,7 +82,6 @@ def breadthFirstSearch(problem: SearchProblem):
                     new_path = path + [action]
                     queue.push((successor, new_path))
     return []
-
 
 def uniformCostSearch(problem: SearchProblem):
     """
@@ -116,11 +111,6 @@ def uniformCostSearch(problem: SearchProblem):
                     
     return []
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> A/feature
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan"):
     """
     Search the node that has the lowest combined cost and heuristic first.
@@ -164,11 +154,6 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan
                 pq.push((sucesor, acciones + [accion], nuevo_g), nuevo_f)
 
     return []
-<<<<<<< HEAD
-=======
-
->>>>>>> A/feature
-
 
 # Abbreviations (you can use them for the -f option in main.py)
 bfs = breadthFirstSearch
