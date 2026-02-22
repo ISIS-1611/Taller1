@@ -111,7 +111,7 @@ def uniformCostSearch(problem: SearchProblem):
                     
     return []
 
-def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan"):
+def aStarSearch(problem: SearchProblem, heuristic=manhattanHeuristic, tipo="manhattan"):
     """
     Search the node that has the lowest combined cost and heuristic first.
 
