@@ -1,7 +1,7 @@
 from algorithms.problems import SearchProblem
 import algorithms.utils as utils
 from world.game import Directions
-from algorithms.heuristics import nullHeuristic
+from algorithms.heuristics import manhattanHeuristic, euclideanHeuristic
 
 
 def tinyHouseSearch(problem: SearchProblem):
@@ -49,12 +49,51 @@ def uniformCostSearch(problem: SearchProblem):
     utils.raiseNotDefined()
 
 
-def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
+
+def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan"):
     """
     Search the node that has the lowest combined cost and heuristic first.
+
+    tipo: "manhattan" o "euclidean"
     """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    if tipo == "euclidean":
+        heuristica = euclideanHeuristic
+    elif tipo == "manhattan":
+        heuristica = manhattanHeuristic
+    else:
+        heuristica = heuristic
+
+    pq = utils.PriorityQueue()
+    visitados = set()
+    mejor_costo = {}
+
+    inicio = problem.getStartState()
+    costo_g = 0
+    costo_f = costo_g + heuristica(inicio, problem)
+
+    pq.push((inicio, [], costo_g), costo_f)
+    mejor_costo[inicio] = 0
+
+    while not pq.isEmpty():
+        estado, acciones, costo_g = pq.pop()
+
+        if problem.isGoalState(estado):
+            return acciones
+
+        if estado in visitados:
+            continue
+        visitados.add(estado)
+
+        for sucesor, accion, costo in problem.getSuccessors(estado):
+            nuevo_g = costo_g + costo
+
+            if (sucesor not in mejor_costo) or (nuevo_g < mejor_costo[sucesor]):
+                mejor_costo[sucesor] = nuevo_g
+                nuevo_f = nuevo_g + heuristica(sucesor, problem)
+                pq.push((sucesor, acciones + [accion], nuevo_g), nuevo_f)
+
+    return []
+
 
 
 # Abbreviations (you can use them for the -f option in main.py)
