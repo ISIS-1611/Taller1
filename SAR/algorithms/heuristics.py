@@ -11,7 +11,6 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-
 def manhattanHeuristic(state, problem):
     """
     The Manhattan distance heuristic.
@@ -38,11 +37,34 @@ def manhattanHeuristic(state, problem):
     return 0
 
 
-
 def euclideanHeuristic(state, problem):
     """
     The Euclidean distance heuristic.
     """
+    if type(state) == tuple and len(state) == 2 and type(state[0]) == int and type(state[1]) == int:
+        posicion = state
+    else:
+        posicion = state[0]
+
+    if hasattr(problem, "goal"):
+        xg, yg = problem.goal
+        x, y = posicion
+        dx = x - xg
+        dy = y - yg
+        return math.sqrt(dx * dx + dy * dy)
+
+    if hasattr(problem, "goals"):
+        x, y = posicion
+        mejor = None
+        for xg, yg in problem.goals:
+            dx = x - xg
+            dy = y - yg
+            d = math.sqrt(dx * dx + dy * dy)
+            if mejor is None or d < mejor:
+                mejor = d
+        return mejor if mejor is not None else 0
+
+    return 0
     if type(state) == tuple and len(state) == 2 and type(state[0]) == int and type(state[1]) == int:
         posicion = state
     else:
@@ -77,12 +99,6 @@ def survivorHeuristic(state: Tuple[Tuple, Any], problem: MultiSurvivorProblem):
     problem: MultiSurvivorProblem instance
 
     This must be admissible and preferably consistent.
-
-    Hints:
-    - Use problem.heuristicInfo to cache expensive computations
-    - Go with some simple heuristics first, then build up to more complex ones
-    - Consider: distance to nearest survivor + MST of remaining survivors
-    - Balance heuristic strength vs. computation time (do experiments!)
     """
     posicion, grilla = state
 

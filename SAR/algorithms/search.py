@@ -29,26 +29,98 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     # TODO: Add your code here
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    
+    estado_inicial = problem.getStartState()
+    
+    if problem.isGoalState(estado_inicial):
+        return []
+    
+    pila = utils.Stack()
+    pila.push((problem.getStartState(), []))
+    
+    visitados = set()
+
+    while not pila.isEmpty():
+        estado, camino = pila.pop()
+        
+        if estado in visitados:
+            continue
+        
+        visitados.add(estado)
+        
+        if problem.isGoalState(estado):
+            return camino
+        # DFS no se preocupa por los costos porque siempre va a profundidad
+        for nuevo_estado, accion in problem.getSuccessors(estado):
+            if nuevo_estado not in visitados:
+                nuevo_camino = camino + [accion]
+                pila.push((nuevo_estado, nuevo_camino))
+                
+    return []
+        
     utils.raiseNotDefined()
 
 
 def breadthFirstSearch(problem: SearchProblem):
     """
     Search the shallowest nodes in the search tree first.
-    """
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    """    
+    start_state = problem.getStartState()
+    queue = utils.Queue()
+    queue.push((start_state, []))
+    visited = set()
+    while not queue.isEmpty():
+        current_state, path = queue.pop()
+
+        if problem.isGoalState(current_state):
+            return path
+
+        if current_state not in visited:
+            visited.add(current_state)
+
+            for successor, action, stepcost in problem.getSuccessors(current_state):
+                if successor not in visited:
+                    new_path = path + [action]
+                    queue.push((successor, new_path))
+    return []
 
 
 def uniformCostSearch(problem: SearchProblem):
     """
     Search the node of least total cost first.
     """
+    estado_inicial = problem.getStartState()
+    pq = utils.PriorityQueue()
+    pq.push((estado_inicial, [], 0), 0)
+    visitados = set()
 
-    # TODO: Add your code here
-    utils.raiseNotDefined()
+    while not pq.isEmpty():
+        estado, camino, costo_actual = pq.pop()
+
+        if problem.isGoalState(estado):
+            return camino
+
+        if estado not in visitados:
+            visitados.add(estado)
+
+            for sucesor, accion, costo_paso in problem.getSuccessors(estado):
+                if sucesor not in visitados:
+
+                    nuevo_camino = camino + [accion]
+                    nuevo_costo = costo_actual + costo_paso
+                    
+                    pq.push((sucesor, nuevo_camino, nuevo_costo), nuevo_costo)
+                    
+    return []
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> A/feature
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan"):
     """
     Search the node that has the lowest combined cost and heuristic first.
@@ -92,6 +164,10 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic, tipo="manhattan
                 pq.push((sucesor, acciones + [accion], nuevo_g), nuevo_f)
 
     return []
+<<<<<<< HEAD
+=======
+
+>>>>>>> A/feature
 
 
 # Abbreviations (you can use them for the -f option in main.py)
