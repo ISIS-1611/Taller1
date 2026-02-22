@@ -1,7 +1,6 @@
 from typing import Any, Tuple
 from algorithms import utils
 from algorithms.problems import MultiSurvivorProblem
-import math
 
 
 def nullHeuristic(state, problem=None):
@@ -41,30 +40,6 @@ def euclideanHeuristic(state, problem):
     """
     The Euclidean distance heuristic.
     """
-    if type(state) == tuple and len(state) == 2 and type(state[0]) == int and type(state[1]) == int:
-        posicion = state
-    else:
-        posicion = state[0]
-
-    if hasattr(problem, "goal"):
-        xg, yg = problem.goal
-        x, y = posicion
-        dx = x - xg
-        dy = y - yg
-        return math.sqrt(dx * dx + dy * dy)
-
-    if hasattr(problem, "goals"):
-        x, y = posicion
-        mejor = None
-        for xg, yg in problem.goals:
-            dx = x - xg
-            dy = y - yg
-            d = math.sqrt(dx * dx + dy * dy)
-            if mejor is None or d < mejor:
-                mejor = d
-        return mejor if mejor is not None else 0
-
-    return 0
     if type(state) == tuple and len(state) == 2 and type(state[0]) == int and type(state[1]) == int:
         posicion = state
     else:

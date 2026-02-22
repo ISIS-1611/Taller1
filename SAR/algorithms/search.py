@@ -111,26 +111,19 @@ def uniformCostSearch(problem: SearchProblem):
                     
     return []
 
-def aStarSearch(problem: SearchProblem, heuristic=manhattanHeuristic, tipo="manhattan"):
+def aStarSearch(problem: SearchProblem, heuristic=manhattanHeuristic):
     """
     Search the node that has the lowest combined cost and heuristic first.
 
-    tipo: "manhattan" o "euclidean"
+    heuristic: manhattanHeuristic o manhattanHeuristic
     """
-    if tipo == "euclidean":
-        heuristica = euclideanHeuristic
-    elif tipo == "manhattan":
-        heuristica = manhattanHeuristic
-    else:
-        heuristica = heuristic
-
     pq = utils.PriorityQueue()
     visitados = set()
     mejor_costo = {}
 
     inicio = problem.getStartState()
     costo_g = 0
-    costo_f = costo_g + heuristica(inicio, problem)
+    costo_f = costo_g + heuristic(inicio, problem)
 
     pq.push((inicio, [], costo_g), costo_f)
     mejor_costo[inicio] = 0
@@ -150,7 +143,7 @@ def aStarSearch(problem: SearchProblem, heuristic=manhattanHeuristic, tipo="manh
 
             if (sucesor not in mejor_costo) or (nuevo_g < mejor_costo[sucesor]):
                 mejor_costo[sucesor] = nuevo_g
-                nuevo_f = nuevo_g + heuristica(sucesor, problem)
+                nuevo_f = nuevo_g + heuristic(sucesor, problem)
                 pq.push((sucesor, acciones + [accion], nuevo_g), nuevo_f)
 
     return []
