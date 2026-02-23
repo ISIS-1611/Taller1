@@ -53,7 +53,7 @@ def depthFirstSearch(problem: SearchProblem):
         if problem.isGoalState(estado):
             return camino
         # DFS no se preocupa por los costos porque siempre va a profundidad
-        for nuevo_estado, accion in problem.getSuccessors(estado):
+        for nuevo_estado, accion, costo in problem.getSuccessors(estado):
             if nuevo_estado not in visitados:
                 nuevo_camino = camino + [accion]
                 pila.push((nuevo_estado, nuevo_camino))
