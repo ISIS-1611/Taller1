@@ -13,41 +13,81 @@ def tinyHouseSearch(problem: SearchProblem):
     w = Directions.WEST
     return [s, s, w, s, w, w, s, w]
 
+# =============================================================================
+# REGISTRO DE USO DE IA - TALLER DE ALGORITMOS DE BÚSQUEDA
+# =============================================================================
+
+"""
+1. VERSIÓN INICIAL DEL CÓDIGO (COMENTADA):
+-----------------------------------------------------------------------------
 def depthFirstSearch(problem: SearchProblem):
-    """
-    Search the deepest nodes in the search tree first.
-    """
-    
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    
-    estado_inicial = problem.getStartState()
-    
-    if problem.isGoalState(estado_inicial):
-        return []
-    
     pila = utils.Stack()
     pila.push((problem.getStartState(), []))
-    
     visitados = set()
-
     while not pila.isEmpty():
         estado, camino = pila.pop()
-        
-        if estado in visitados:
-            continue
-        
+        if estado in visitados: continue
         visitados.add(estado)
-        
-        if problem.isGoalState(estado):
-            return camino
-        # DFS no se preocupa por los costos porque siempre va a profundidad
+        if problem.isGoalState(estado): return camino
         for nuevo_estado, accion, costo in problem.getSuccessors(estado):
             if nuevo_estado not in visitados:
-                nuevo_camino = camino + [accion]
-                pila.push((nuevo_estado, nuevo_camino))
-                
+                pila.push((nuevo_estado, camino + [accion]))
+    return []
+
+(Nota: El resto de versiones iniciales seguían el mismo patrón de pasar 
+listas 'camino + [accion]' en la estructura de datos, lo cual es ineficiente).
+
+2. PROMPTS UTILIZADOS PARA EL REFINAMIENTO:
+-----------------------------------------------------------------------------
+PROMPT 1: "Analiza cada algoritmo de búsqueda, entiéndelo y explica las mejoras 
+qué le harías y por qué. Toma en cuenta las estructuras de datos y cómo 
+afectaría su complejidad en espacio y tiempo."
+
+PROMPT 2: "Haz todos los cambios que sugieres en cada algoritmo de forma qué los 
+pueda copiar y pegar directamente en mi código, siguiendo la política de uso de 
+IA de mi universidad (incluyendo versión inicial, prompts y versión final en 
+comentarios)."
+
+3. VERSIÓN FINAL (CÓDIGO ACTIVO A CONTINUACIÓN):
+-----------------------------------------------------------------------------
+"""
+
+def reconstructPath(state, parent_map):
+    """
+    Función auxiliar para reconstruir el camino desde el objetivo hacia el inicio
+    utilizando un diccionario de punteros al padre.
+    """
+    path = []
+    while state in parent_map:
+        parent_state, action = parent_map[state]
+        path.append(action)
+        state = parent_state
+    return path[::-1]
+
+def depthFirstSearch(problem: SearchProblem):
+    """
+    Mejora: Uso de Mapa de Padres (Backtracking) para optimizar memoria.
+    Complejidad Espacio: O(V) en lugar de O(V^2) por no copiar listas de caminos.
+    """
+    start_state = problem.getStartState()
+    stack = utils.Stack()
+    stack.push(start_state)
+    
+    visited = set()
+    parent_map = {} # estado_hijo: (estado_padre, accion)
+
+    while not stack.isEmpty():
+        state = stack.pop()
+
+        if problem.isGoalState(state):
+            return reconstructPath(state, parent_map)
+
+        if state not in visited:
+            visited.add(state)
+            for successor, action, cost in problem.getSuccessors(state):
+                if successor not in visited:
+                    parent_map[successor] = (state, action)
+                    stack.push(successor)
     return []
         
 def breadthFirstSearch(problem: SearchProblem):
