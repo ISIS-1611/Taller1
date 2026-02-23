@@ -1,6 +1,7 @@
 from typing import Any, Tuple
 from algorithms import utils
 from algorithms.problems import MultiSurvivorProblem
+import math
 
 
 def nullHeuristic(state, problem=None):
