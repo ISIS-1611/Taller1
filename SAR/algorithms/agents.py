@@ -70,7 +70,7 @@ class SearchAgent(Agent):
 
         totalCost = problem.getCostOfActions(self.actions)
         print(
-            "Path found with total cost of %d in %.1f seconds"
+            "Path found with total cost of %d in %.4f seconds"
             % (totalCost, time.time() - starttime)
         )
         if "_expanded" in dir(problem):
